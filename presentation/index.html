@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>居家烹飪科學：牛排梅納反應與低溫舒肥安全指南 | LLM Wiki 教學簡報</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Noto Sans TC', 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #141210;
+      color: #f5f2ed;
+    }
+    .slide { display: none; animation: fadeIn 0.28s ease-out; }
+    .slide.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .wiki-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(234, 88, 12, 0.16);
+      border: 1px solid rgba(251, 146, 60, 0.45);
+      color: #fdba74;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-orange-500 selection:text-white">
+
+  <!-- Top Navigation & Progress Bar -->
+  <header class="sticky top-0 z-30 bg-[#1c1917]/95 backdrop-blur border-b border-stone-800 px-4 py-3">
+    <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-orange-600 text-white font-bold text-sm">🔥</span>
+        <div>
+          <h1 class="text-sm sm:text-base font-bold text-stone-100 leading-tight">居家烹飪科學教學簡報</h1>
+          <p class="text-xs text-stone-400">知識來源：cooking-science-wiki (6 篇 Wiki 條目)</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <label for="slideSelect" class="sr-only">跳轉投影片</label>
+        <select id="slideSelect" class="bg-stone-900 border border-stone-700 text-stone-200 text-xs sm:text-sm rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-orange-500">
+          <option value="0">1. 封面與核心提問</option>
+          <option value="1">2. Wiki 知識地圖</option>
+          <option value="2">3. 梅納反應 vs 焦糖化</option>
+          <option value="3">4. 蛋白質變性溫度軸</option>
+          <option value="4">5. 牛排熟度與靜置實驗</option>
+          <option value="5">6. 舒肥巴氏殺菌曲線</option>
+          <option value="6">7. 實戰排錯：水煮效應</option>
+          <option value="7">8. Loop/Graph 與查核反思</option>
+        </select>
+        <span id="slideCounter" class="text-xs font-mono bg-stone-800 text-stone-300 px-2.5 py-1.5 rounded-lg">1 / 8</span>
+      </div>
+    </div>
+    <div class="max-w-5xl mx-auto mt-2.5 h-1.5 bg-stone-800 rounded-full overflow-hidden">
+      <div id="progressBar" class="h-full bg-gradient-to-r from-orange-500 to-amber-400 transition-all duration-300" style="width: 12.5%"></div>
+    </div>
+  </header>
+
+  <!-- Main Slide Stage -->
+  <main class="flex-1 w-full max-w-5xl mx-auto px-4 py-6 sm:py-10 flex items-center">
+    <div class="w-full">
+
+      <!-- SLIDE 1: Cover -->
+      <section class="slide active bg-stone-900/90 border border-stone-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          <span class="wiki-badge">📚 LLM Wiki 教學簡報</span>
+          <span class="text-xs text-stone-400 bg-stone-800 px-2.5 py-1 rounded-full">零基礎新手友善</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black text-white leading-snug mb-4">
+          居家烹飪科學：<br class="hidden sm:inline" />
+          <span class="text-orange-400">牛排的「梅納反應」</span>與<span class="text-amber-300">低溫舒肥安全指南</span>
+        </h2>
+        <p class="text-stone-300 text-base sm:text-lg leading-relaxed mb-8 max-w-3xl">
+          為什麼照著食譜大火煎牛排卻只煎出「灰白水煮肉」？為什麼舒肥 60°C 還帶點粉紅色的雞胸肉其實已經殺菌完成？這份簡報將用 6 篇科學 Wiki 條目，帶你從零掌握「焦香」與「多汁安全」的底層溫度密碼。
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div class="bg-stone-950/70 border border-stone-800 rounded-xl p-4">
+            <div class="text-orange-400 font-bold text-sm mb-1">模組 1｜核心化學與物理</div>
+            <p class="text-xs sm:text-sm text-stone-300">看懂 140°C 梅納反應與蛋白質收縮的溫度界線。</p>
+          </div>
+          <div class="bg-stone-950/70 border border-stone-800 rounded-xl p-4">
+            <div class="text-amber-300 font-bold text-sm mb-1">模組 2｜黃金參數與食安</div>
+            <p class="text-xs sm:text-sm text-stone-300">互動查詢牛排熟度、靜置時間與舒肥殺菌曲線。</p>
+          </div>
+          <div class="bg-stone-950/70 border border-stone-800 rounded-xl p-4">
+            <div class="text-emerald-400 font-bold text-sm mb-1">模組 3｜實戰排錯與架構</div>
+            <p class="text-xs sm:text-sm text-stone-300">破解 100°C 水煮效應，並公開 LLM Wiki 生成迴圈。</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button" id="startBtn" class="bg-orange-600 hover:bg-orange-500 text-white font-bold px-6 py-3 rounded-xl transition cursor-pointer">
+            開始學習（進入第 2 頁） →
+          </button>
+          <span class="text-xs text-stone-400">提示：可使用鍵盤左右方向鍵 <kbd class="bg-stone-800 px-1.5 py-0.5 rounded">←</kbd> <kbd class="bg-stone-800 px-1.5 py-0.5 rounded">→</kbd> 換頁</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: Knowledge Map -->
+      <section class="slide bg-stone-900/90 border border-stone-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-5">
+          <span class="wiki-badge">🔗 來源：README.md 知識地圖（6 篇 Wiki 1 對 1 對應）</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">這份簡報的知識從哪來？點擊卡片直接跳轉</h2>
+        <p class="text-sm text-stone-400 mb-6">每一頁教學內容都嚴格對應 <code class="text-orange-300">wiki/</code> 資料夾中的獨立條目，並透過 <code class="text-orange-300">[[雙向連結]]</code> 串聯因果。</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <button type="button" data-goto="2" class="text-left bg-stone-950/80 hover:border-orange-500 border border-stone-800 rounded-xl p-4 transition cursor-pointer">
+            <div class="text-xs font-mono text-orange-400 mb-1">wiki-01 &amp; wiki-02 → Slide 3</div>
+            <div class="font-bold text-white mb-1">[[梅納反應]] vs [[焦糖化反應]]</div>
+            <p class="text-xs text-stone-400">140–165°C 胺基酸與糖的香氣來源，區分純糖焦糖化。</p>
+          </button>
+          <button type="button" data-goto="3" class="text-left bg-stone-950/80 hover:border-orange-500 border border-stone-800 rounded-xl p-4 transition cursor-pointer">
+            <div class="text-xs font-mono text-orange-400 mb-1">wiki-03 → Slide 4</div>
+            <div class="font-bold text-white mb-1">[[蛋白質變性與肉汁流失]]</div>
+            <p class="text-xs text-stone-400">肌凝蛋白 (50–55°C) 與肌動蛋白 (66°C+) 如何決定嫩度。</p>
+          </button>
+          <button type="button" data-goto="4" class="text-left bg-stone-950/80 hover:border-orange-500 border border-stone-800 rounded-xl p-4 transition cursor-pointer">
+            <div class="text-xs font-mono text-orange-400 mb-1">wiki-04 → Slide 5</div>
+            <div class="font-bold text-white mb-1">[[牛排中心溫度與靜置回溫]]</div>
+            <p class="text-xs text-stone-400">三分/五分/七分熟攝氏標準，與靜置鎖住 7% 肉汁實驗。</p>
+          </button>
+          <button type="button" data-goto="5" class="text-left bg-stone-950/80 hover:border-amber-400 border border-stone-800 rounded-xl p-4 transition cursor-pointer">
+            <div class="text-xs font-mono text-amber-400 mb-1">wiki-05 → Slide 6</div>
+            <div class="font-bold text-white mb-1">[[低溫舒肥巴氏殺菌曲線]]</div>
+            <p class="text-xs text-stone-400">60°C 維持 27.5 分鐘等於 74°C 殺菌力的食安曲線。</p>
+          </button>
+          <button type="button" data-goto="6" class="text-left bg-stone-950/80 hover:border-emerald-400 border border-stone-800 rounded-xl p-4 transition cursor-pointer">
+            <div class="text-xs font-mono text-emerald-400 mb-1">wiki-06 → Slide 7</div>
+            <div class="font-bold text-white mb-1">[[表面水分與水煮效應]]</div>
+            <p class="text-xs text-stone-400">為何沒擦乾會卡在 100°C 沸點，煎不出焦脆外殼。</p>
+          </button>
+          <button type="button" data-goto="7" class="text-left bg-stone-950/80 hover:border-sky-400 border border-stone-800 rounded-xl p-4 transition cursor-pointer">
+            <div class="text-xs font-mono text-sky-400 mb-1">logs/ → Slide 8</div>
+            <div class="font-bold text-white mb-1">Loop / Graph 與反思紀錄</div>
+            <p class="text-xs text-stone-400">公開「食安查核節點前移」與錯誤攔截的真實執行紀錄。</p>
+          </button>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: Maillard vs Caramelization -->
+      <section class="slide bg-stone-900/90 border border-stone-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <span class="wiki-badge">🔗 來源：[[梅納反應]] (wiki-01) &amp; [[焦糖化反應]] (wiki-02)</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">核心原理 ①：牛排的焦香不是「糖燒焦」</h2>
+        <p class="text-sm text-stone-300 mb-6">許多人把食物上色統稱為「焦糖化」，但煎牛排的肉香主要來自需要蛋白質參與的「梅納反應」。</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+          <div class="bg-orange-950/30 border border-orange-700/50 rounded-xl p-5">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-lg font-bold text-orange-300">梅納反應 (Maillard Reaction)</h3>
+              <span class="text-xs font-mono bg-orange-900/60 text-orange-200 px-2 py-0.5 rounded">140°C – 165°C</span>
+            </div>
+            <ul class="space-y-2 text-sm text-stone-200">
+              <li>• <strong>參與主角</strong>：胺基酸（蛋白質）＋ 還原糖。</li>
+              <li>• <strong>黃金溫區</strong>：約 110°C 起步，<strong>140°C–165°C</strong> 反應最劇烈。</li>
+              <li>• <strong>風味產物</strong>：吡嗪、呋喃與類黑素 → 產生<strong>烤肉香、堅果香、鮮味</strong>。</li>
+              <li>• <strong>酸鹼影響</strong>：偏鹼性 (pH &gt; 7) 會加速上色；酸性醃料會減慢。</li>
+            </ul>
+          </div>
+
+          <div class="bg-amber-950/25 border border-amber-700/40 rounded-xl p-5">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-lg font-bold text-amber-300">焦糖化反應 (Caramelization)</h3>
+              <span class="text-xs font-mono bg-amber-900/60 text-amber-200 px-2 py-0.5 rounded">160°C 以上</span>
+            </div>
+            <ul class="space-y-2 text-sm text-stone-200">
+              <li>• <strong>參與主角</strong>：純碳水化合物（糖類），<strong>不需蛋白質</strong>。</li>
+              <li>• <strong>起始溫度</strong>：果糖約 110°C、葡萄糖 150–160°C、蔗糖需 <strong>160°C+</strong>。</li>
+              <li>• <strong>風味產物</strong>：雙乙醯、麥芽醇 → 產生<strong>甜香、太妃糖、微苦焦香</strong>。</li>
+              <li>• <strong>危險警戒線</strong>：超過 <strong>180°C–200°C</strong> 會進入炭化燒焦（產生苦味）。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-stone-950 border border-stone-800 rounded-xl p-4 text-xs sm:text-sm text-stone-300">
+          💡 <strong>新手重點</strong>：純牛排表面幾乎沒有蔗糖，靠的是肌肉裡的胺基酸與微量還原糖在 <strong>140°C–165°C</strong> 產生梅納反應！
+        </div>
+      </section>
+
+      <!-- SLIDE 4: Protein Denaturation Interactive Slider -->
+      <section class="slide bg-stone-900/90 border border-stone-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <span class="wiki-badge">🔗 來源：[[蛋白質變性與肉汁流失]] (wiki-03)</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">核心原理 ②：為什麼肉煮太高溫會像擰毛巾？</h2>
+        <p class="text-sm text-stone-300 mb-6">拖動下方溫度滑桿，觀察肉類內部的三種蛋白質在不同中心溫度下的變化：</p>
+
+        <div class="bg-stone-950 border border-stone-800 rounded-xl p-5 mb-5">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <label for="proteinTempSlider" class="text-sm font-bold text-stone-200">模擬肉品中心溫度：</label>
+            <span id="proteinTempReadout" class="text-xl font-black text-orange-400 font-mono">55°C (131°F)</span>
+          </div>
+          <input id="proteinTempSlider" type="range" min="45" max="80" value="55" class="w-full accent-orange-500 cursor-pointer" />
+          <div class="flex justify-between text-xs text-stone-500 font-mono mt-1">
+            <span>45°C 生肉</span>
+            <span>55°C 肌凝蛋白變性</span>
+            <span>66°C 肌動蛋白收縮</span>
+            <span>80°C 嚴重乾柴</span>
+          </div>
+        </div>
+
+        <div id="proteinStatusCard" class="bg-stone-950/70 border border-orange-500/40 rounded-xl p-5 mb-4">
+          <div id="proteinStageTitle" class="text-lg font-bold text-orange-300 mb-1">50–55°C：肌凝蛋白 (Myosin) 開始變性</div>
+          <p id="proteinStageDesc" class="text-sm text-stone-200 leading-relaxed">
+            肌肉纖維開始溫和展開並凝固，肉質從滑膩生肉轉為軟嫩不透明，水分仍牢牢鎖在細胞結構內，這是牛排三分至五分熟的多汁秘密。
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div class="bg-stone-800/60 rounded-lg p-3">
+            <div class="font-bold text-emerald-300">肌凝蛋白 Myosin</div>
+            <div class="text-stone-300 mt-0.5">50–55°C 開始變性（頭部 ~55°C、尾部 ~60–64°C），口感軟嫩。</div>
+          </div>
+          <div class="bg-stone-800/60 rounded-lg p-3">
+            <div class="font-bold text-amber-300">膠原蛋白 Collagen</div>
+            <div class="text-stone-300 mt-0.5">55–65°C+ 長時間濕熱烹調會溶解為明膠，增加滑順感。</div>
+          </div>
+          <div class="bg-stone-800/60 rounded-lg p-3">
+            <div class="font-bold text-rose-400">肌動蛋白 Actin</div>
+            <div class="text-stone-300 mt-0.5">66–78°C+ 劇烈收縮，像擰毛巾般擠出大量肉汁導致乾柴。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Steak Doneness & Resting -->
+      <section class="slide bg-stone-900/90 border border-stone-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <span class="wiki-badge">🔗 來源：[[牛排中心溫度與靜置回溫]] (wiki-04)</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">黃金參數 ①：牛排熟度與「靜置回溫」實驗</h2>
+        <p class="text-sm text-stone-300 mb-5">全數統一以攝氏 (°C) 為主標示，並扣除離火後還會上升 3–5°C 的「餘溫效應」。</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Left: Interactive Doneness Selector -->
+          <div class="bg-stone-950 border border-stone-800 rounded-xl p-5">
+            <div class="text-sm font-bold text-stone-200 mb-3">點選目標熟度查看精準參數：</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+              <button type="button" data-doneness="rare" class="doneness-btn bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold py-2 px-2 rounded-lg cursor-pointer">三分熟</button>
+              <button type="button" data-doneness="mediumRare" class="doneness-btn bg-orange-600 text-white text-xs font-bold py-2 px-2 rounded-lg cursor-pointer">五分熟 ⭐</button>
+              <button type="button" data-doneness="medium" class="doneness-btn bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold py-2 px-2 rounded-lg cursor-pointer">七分熟</button>
+              <button type="button" data-doneness="wellDone" class="doneness-btn bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold py-2 px-2 rounded-lg cursor-pointer">全熟</button>
+            </div>
+            <div id="donenessDetail" class="space-y-2 text-sm">
+              <div class="flex justify-between border-b border-stone-800 pb-2">
+                <span class="text-stone-400">目標中心溫度</span>
+                <span id="donenessTemp" class="font-bold text-orange-400 font-mono">54–57°C (130–135°F)</span>
+              </div>
+              <div class="flex justify-between border-b border-stone-800 pb-2">
+                <span class="text-stone-400">建議離火時機</span>
+                <span id="donenessPull" class="font-bold text-amber-300 font-mono">約 51–52°C（預留 3–5°C 餘溫）</span>
+              </div>
+              <p id="donenessNote" class="text-xs text-stone-300 pt-1 leading-relaxed">
+                五分熟 (Medium Rare) 是牛排最推薦的黃金熟度：肌凝蛋白適度凝固但肌動蛋白尚未收縮，中心呈溫暖粉紅色且肉汁最飽滿。
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: Resting Experiment -->
+          <div class="bg-stone-950 border border-stone-800 rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="text-sm font-bold text-emerald-300 mb-1">J. Kenji López-Alt 靜置回溫實驗</div>
+              <p class="text-xs text-stone-400 mb-3">同批次牛排煎至 52°C (125°F)（烹煮自然流失 13% 重量），比較切開時機：</p>
+              <div class="space-y-3">
+                <div>
+                  <div class="flex justify-between text-xs mb-1">
+                    <span class="text-rose-300 font-bold">❌ 剛離火立即切開</span>
+                    <span class="font-mono text-rose-300">額外流失 9% 肉汁</span>
+                  </div>
+                  <div class="w-full bg-stone-800 h-3 rounded-full overflow-hidden">
+                    <div class="bg-rose-500 h-full" style="width: 90%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs mb-1">
+                    <span class="text-emerald-300 font-bold">✅ 靜置 7.5–10 分鐘後切開</span>
+                    <span class="font-mono text-emerald-300">僅流失 2% 肉汁</span>
+                  </div>
+                  <div class="w-full bg-stone-800 h-3 rounded-full overflow-hidden">
+                    <div class="bg-emerald-500 h-full" style="width: 20%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 bg-emerald-950/30 border border-emerald-800/50 rounded-lg p-3 text-xs text-stone-200">
+              <strong>經驗法則</strong>：每 2.5 公分（1 吋）厚度靜置 <strong>5 分鐘</strong>（一般牛排靜置 5–10 分鐘，讓中心微降至 49°C / 120°F），肌纖維放鬆後就能把肉汁鎖回肉裡。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: Sous-Vide Pasteurization -->
+      <section class="slide bg-stone-900/90 border border-stone-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <span class="wiki-badge">🔗 來源：[[低溫舒肥巴氏殺菌曲線]] (wiki-05)</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">黃金參數 ②：低溫舒肥的「巴氏殺菌曲線」</h2>
+        <p class="text-sm text-stone-300 mb-5">殺菌看的是「<strong>溫度 × 時間</strong>」的累積效果。選擇不同水浴溫度，查看雞胸肉達到安全減菌所需的維持時間：</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+          <div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+              <button type="button" data-sv="60" class="sv-btn bg-orange-600 text-white text-xs font-bold py-2 px-2 rounded-lg cursor-pointer">60°C (140°F)</button>
+              <button type="button" data-sv="63" class="sv-btn bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold py-2 px-2 rounded-lg cursor-pointer">63°C (145°F)</button>
+              <button type="button" data-sv="66" class="sv-btn bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold py-2 px-2 rounded-lg cursor-pointer">66°C (150°F)</button>
+              <button type="button" data-sv="74" class="sv-btn bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold py-2 px-2 rounded-lg cursor-pointer">74°C (傳統)</button>
+            </div>
+
+            <div class="bg-stone-950 border border-stone-800 rounded-xl p-4 mb-4">
+              <div class="text-xs text-stone-400">達到中心溫度後必須維持：</div>
+              <div id="svHoldTime" class="text-2xl font-black text-amber-300 font-mono my-1">27.5 分鐘</div>
+              <p id="svDesc" class="text-xs text-stone-300 leading-relaxed">
+                60°C 是極致粉嫩多汁的雞胸肉設定。實務上需加上肉品中心升溫預熱時間，建議總計舒肥 1 至 1.5 小時。
+              </p>
+            </div>
+
+            <div class="bg-rose-950/40 border border-rose-700/60 rounded-xl p-3.5 text-xs text-rose-200 leading-relaxed">
+              ⚠️ <strong>食安強制查核警語</strong>：不可只記「60°C 可殺菌」而漏掉「維持 27.5 分鐘」的時間前提！且水溫絕不可低於 <strong>54.4°C (130°F)</strong>，也不可將牛排五分熟短時間標準套用於雞肉。
+            </div>
+          </div>
+
+          <div class="bg-stone-950 border border-stone-800 rounded-xl p-4">
+            <div class="text-xs font-bold text-stone-300 mb-2">雞胸肉巴氏殺菌維持時間對照 (Douglas Baldwin / Anova)</div>
+            <div class="relative h-64">
+              <canvas id="svChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Searing Troubleshooting -->
+      <section class="slide bg-stone-900/90 border border-stone-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <span class="wiki-badge">🔗 來源：[[表面水分與水煮效應]] (wiki-06)</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">實戰排錯：為什麼大火煎還是灰白沒焦香？</h2>
+        <p class="text-sm text-stone-300 mb-5">切換下方兩種下鍋狀態，看懂為什麼「沒擦乾表面」會把煎牛排變成「水煮牛排」：</p>
+
+        <div class="flex gap-2 mb-5">
+          <button type="button" id="searWetBtn" class="bg-rose-600 text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-lg cursor-pointer">❌ 錯誤：表面濕潤直接下鍋</button>
+          <button type="button" id="searDryBtn" class="bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs sm:text-sm font-bold px-4 py-2 rounded-lg cursor-pointer">✅ 正確：徹底擦乾 + 高蓄熱鍋具</button>
+        </div>
+
+        <div id="searPanel" class="bg-rose-950/25 border border-rose-700/50 rounded-xl p-6 mb-5">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <h3 id="searTitle" class="text-xl font-bold text-rose-300">水煮效應 (Steaming Effect)：表面溫度鎖死在 100°C</h3>
+            <span id="searTempBadge" class="font-mono text-sm font-bold bg-rose-900/70 text-rose-200 px-3 py-1 rounded-full">表面最高溫：100°C</span>
+          </div>
+          <p id="searBody" class="text-sm text-stone-200 leading-relaxed mb-4">
+            水在 100°C (212°F) 就會沸騰吸熱。在表面水分（特別是剛從舒肥袋取出的肉汁）完全蒸發前，鍋子的熱量全被拿去燒開水，表面溫度無法跨越 140°C 的梅納反應門檻。結果煎了兩分鐘還是灰白沒上色，內部卻已被蒸到過熟乾柴。
+          </p>
+          <div id="searSteps" class="text-xs text-stone-300 bg-stone-950/70 rounded-lg p-3">
+            <strong>問題診斷</strong>：表面殘水 + 薄底鍋蓄熱不足 → 鍋面降溫跌破 140°C → 梅納反應無法啟動。
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: Loop/Graph & Reflection -->
+      <section class="slide bg-stone-900/90 border border-stone-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <span class="wiki-badge">🔗 來源：logs/execution_and_check_log.md &amp; WIKI_RULES.md</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">作業揭密：Loop / Graph 設計與查核節點反思</h2>
+        <p class="text-sm text-stone-300 mb-5">為了避免 LLM 在生成食安與溫度教學時出錯，我們將「強制查核」前移到寫入 Wiki 與整理大綱之間：</p>
+
+        <!-- Workflow Graph -->
+        <div class="bg-stone-950 border border-stone-800 rounded-xl p-4 mb-5 overflow-x-auto">
+          <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+            <span class="bg-stone-800 text-stone-200 px-3 py-2 rounded-lg">1. 取得資料 (5 篇)</span>
+            <span class="text-stone-500">→</span>
+            <span class="bg-stone-800 text-stone-200 px-3 py-2 rounded-lg">2. Ingest 寫入 Wiki (6 篇)</span>
+            <span class="text-orange-400">⇄</span>
+            <span class="bg-orange-600/30 border border-orange-500 text-orange-200 px-3 py-2 rounded-lg">3. 數值與食安 Fact-Check Gate</span>
+            <span class="text-stone-500">→</span>
+            <span class="bg-stone-800 text-stone-200 px-3 py-2 rounded-lg">4. 1對1 映射整理</span>
+            <span class="text-stone-500">→</span>
+            <span class="bg-emerald-700/40 border border-emerald-500 text-emerald-200 px-3 py-2 rounded-lg">5. 產出 HTML 簡報 &amp; 驗收</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm mb-5">
+          <div class="bg-stone-950/80 border border-stone-800 rounded-xl p-4">
+            <div class="font-bold text-rose-300 mb-1.5">最常出錯的節點：整理重點／摘要生成</div>
+            <p class="text-stone-300 leading-relaxed">
+              LLM 為了讓簡報卡片精簡，在 Run #2 初版摘要曾只寫「60°C 即可殺菌」而<strong>遺漏「維持 27.5 分鐘」的時間前提</strong>；在 Run #1 也曾混淆 120°F (49°C 靜置) 與 130–135°F (54–57°C 五分熟)。
+            </p>
+          </div>
+          <div class="bg-stone-950/80 border border-stone-800 rounded-xl p-4">
+            <div class="font-bold text-emerald-300 mb-1.5">Workflow 調整：把檢查往前移！</div>
+            <p class="text-stone-300 leading-relaxed">
+              我們將檢查從「生成 HTML 後才人工看」往前移到 <strong>Ingest 寫入 Wiki 時</strong>（強制設立「強制查核區」與攝氏統一規範），讓錯誤在純文字階段就被 Loop 攔截退回。
+            </p>
+          </div>
+        </div>
+
+        <div class="text-xs text-stone-400 border-t border-stone-800 pt-3">
+          參考來源：
+          <a href="https://douglasbaldwin.com/sous-vide.html" target="_blank" rel="noopener" class="text-orange-400 underline">Douglas Baldwin Sous Vide</a> ·
+          <a href="https://anovaculinary.com/pages/sous-vide-pasteurization-guide" target="_blank" rel="noopener" class="text-orange-400 underline">Anova Pasteurization</a> ·
+          <a href="https://blog.thermoworks.com/steak-temps-getting-it-right/" target="_blank" rel="noopener" class="text-orange-400 underline">ThermoWorks</a> ·
+          <a href="https://www.foodfirefriends.com/how-long-to-rest-steak/" target="_blank" rel="noopener" class="text-orange-400 underline">Kenji Resting Experiment</a> ·
+          <a href="https://allblogs.in/post/maillard-reaction-vs-caramelization-food-chemistry-guide" target="_blank" rel="noopener" class="text-orange-400 underline">Maillard Chemistry</a> ·
+          <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8909173/" target="_blank" rel="noopener" class="text-orange-400 underline">PMC Protein Denaturation</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Bottom Slide Controls -->
+  <footer class="bg-[#1c1917] border-t border-stone-800 px-4 py-3">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <button type="button" id="prevBtn" class="bg-stone-800 hover:bg-stone-700 disabled:opacity-40 text-stone-200 text-sm font-bold px-4 py-2 rounded-xl transition cursor-pointer">
+        ← 上一頁
+      </button>
+      <div id="dotNav" class="hidden sm:flex items-center gap-2"></div>
+      <button type="button" id="nextBtn" class="bg-orange-600 hover:bg-orange-500 disabled:opacity-40 text-white text-sm font-bold px-4 py-2 rounded-xl transition cursor-pointer">
+        下一頁 →
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+
+    const slideSelect = document.getElementById('slideSelect');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dotNav = document.getElementById('dotNav');
+
+    // Build dot indicators
+    slides.forEach((_, idx) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `跳至第 ${idx + 1} 頁`);
+      dot.className = 'w-2.5 h-2.5 rounded-full transition cursor-pointer bg-stone-700';
+      dot.addEventListener('click', () => goToSlide(idx));
+      dotNav.appendChild(dot);
+    });
+
+    function goToSlide(index) {
+      if (index < 0 || index >= totalSlides) return;
+      slides[currentSlide].classList.remove('active');
+      currentSlide = index;
+      slides[currentSlide].classList.add('active');
+
+      slideSelect.value = String(currentSlide);
+      slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+      progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+
+      Array.from(dotNav.children).forEach((dot, i) => {
+        dot.className = i === currentSlide
+          ? 'w-6 h-2.5 rounded-full transition cursor-pointer bg-orange-500'
+          : 'w-2.5 h-2.5 rounded-full transition cursor-pointer bg-stone-700 hover:bg-stone-500';
+      });
+    }
+
+    prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+    document.getElementById('startBtn').addEventListener('click', () => goToSlide(1));
+    slideSelect.addEventListener('change', (e) => goToSlide(Number(e.target.value)));
+
+    document.querySelectorAll('[data-goto]').forEach(btn => {
+      btn.addEventListener('click', () => goToSlide(Number(btn.dataset.goto)));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+      if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+    });
+
+    // Slide 4: Protein Denaturation Slider
+    const proteinSlider = document.getElementById('proteinTempSlider');
+    const proteinReadout = document.getElementById('proteinTempReadout');
+    const proteinTitle = document.getElementById('proteinStageTitle');
+    const proteinDesc = document.getElementById('proteinStageDesc');
+
+    proteinSlider.addEventListener('input', () => {
+      const c = Number(proteinSlider.value);
+      const f = Math.round(c * 9 / 5 + 32);
+      proteinReadout.textContent = `${c}°C (${f}°F)`;
+      if (c < 50) {
+        proteinTitle.textContent = `${c}°C：尚未明顯變性（生肉狀態）`;
+        proteinDesc.textContent = '肌凝蛋白仍維持緊密結構，肉質呈現半透明、滑膩口感；此時尚未開始鎖水凝固。';
+      } else if (c <= 59) {
+        proteinTitle.textContent = `${c}°C：肌凝蛋白 (Myosin) 溫和變性`;
+        proteinDesc.textContent = '肌凝蛋白頭部 (~55°C) 開始展開凝固，肉質轉為軟嫩不透明且保有極高水分，是牛排三分至五分熟的理想區間。';
+      } else if (c <= 65) {
+        proteinTitle.textContent = `${c}°C：肌凝蛋白尾部變性與膠原蛋白軟化`;
+        proteinDesc.textContent = '肌凝蛋白尾部 (60–64°C) 收縮、膠原蛋白在長時間濕熱下開始轉化為明膠；肉汁開始部分釋出，但仍保持多汁。';
+      } else {
+        proteinTitle.textContent = `${c}°C：肌動蛋白 (Actin) 劇烈收縮擠水！`;
+        proteinDesc.textContent = '66°C 以上肌動蛋白開始劇烈變性收縮，肌原纖維像擰毛巾般將大量肉汁擠出，這就是傳統 74°C 雞胸肉乾柴的主因。';
+      }
+    });
+
+    // Slide 5: Steak Doneness Selector
+    const donenessData = {
+      rare: {
+        temp: '49–54°C (120–130°F)',
+        pull: '約 46–49°C（預留 3–5°C 餘溫）',
+        note: '三分熟 (Rare)：中心呈現鮮紅微溫狀態，肌凝蛋白剛開始變性，口感極度軟嫩。'
+      },
+      mediumRare: {
+        temp: '54–57°C (130–135°F)',
+        pull: '約 51–52°C（預留 3–5°C 餘溫）',
+        note: '五分熟 (Medium Rare) 是牛排最推薦的黃金熟度：肌凝蛋白適度凝固但肌動蛋白尚未收縮，中心呈溫暖粉紅色且肉汁最飽滿。'
+      },
+      medium: {
+        temp: '57–63°C (135–145°F)',
+        pull: '約 54–58°C（預留 3–5°C 餘溫）',
+        note: '七分熟 (Medium)：中心轉為淡粉紅色，組織較緊實，油脂含量高的肋眼或紐約客在此熟度表現佳。'
+      },
+      wellDone: {
+        temp: '68°C 以上 (155°F+)',
+        pull: '約 63–65°C（預留 3–5°C 餘溫）',
+        note: '全熟 (Well Done)：肌動蛋白已開始收縮，肉汁流失明顯，建議搭配醬汁食用。'
+      }
+    };
+
+    const donenessBtns = document.querySelectorAll('.doneness-btn');
+    donenessBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.doneness;
+        const d = donenessData[key];
+        document.getElementById('donenessTemp').textContent = d.temp;
+        document.getElementById('donenessPull').textContent = d.pull;
+        document.getElementById('donenessNote').textContent = d.note;
+        donenessBtns.forEach(b => {
+          b.className = b === btn
+            ? 'doneness-btn bg-orange-600 text-white text-xs font-bold py-2 px-2 rounded-lg cursor-pointer'
+            : 'doneness-btn bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold py-2 px-2 rounded-lg cursor-pointer';
+        });
+      });
+    });
+
+    // Slide 6: Sous-Vide Pasteurization Selector + Chart.js
+    const svData = {
+      60: {
+        time: '27.5 分鐘（達中心溫度後）',
+        desc: '60°C 是極致粉嫩多汁的雞胸肉設定。實務上需加上肉品中心升溫預熱時間，建議總計舒肥 1 至 1.5 小時。'
+      },
+      63: {
+        time: '9.2 分鐘（達中心溫度後）',
+        desc: '63°C 兼顧多汁與較短的殺菌維持時間，口感呈現細緻白嫩，適合不習慣微粉紅雞肉的新手。'
+      },
+      66: {
+        time: '2.8 分鐘（達中心溫度後）',
+        desc: '66°C 殺菌效率極高（65°C 約 5.5 分鐘），但肌動蛋白開始接近收縮邊界，口感會比 60°C 略為紮實。'
+      },
+      74: {
+        time: '瞬間殺菌 (< 10 秒)',
+        desc: '傳統快炒／水煮的安全標準 74°C (165°F)，雖能瞬間滅菌，但肌動蛋白劇烈收縮擠出水分，雞胸肉容易乾柴。'
+      }
+    };
+
+    const svBtns = document.querySelectorAll('.sv-btn');
+    svBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const temp = btn.dataset.sv;
+        document.getElementById('svHoldTime').textContent = svData[temp].time;
+        document.getElementById('svDesc').textContent = svData[temp].desc;
+        svBtns.forEach(b => {
+          b.className = b === btn
+            ? 'sv-btn bg-orange-600 text-white text-xs font-bold py-2 px-2 rounded-lg cursor-pointer'
+            : 'sv-btn bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold py-2 px-2 rounded-lg cursor-pointer';
+        });
+      });
+    });
+
+    if (typeof Chart !== 'undefined') {
+      const ctx = document.getElementById('svChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['60°C (140°F)', '63°C (145°F)', '66°C (150°F)', '74°C (165°F)'],
+          datasets: [{
+            label: '需維持時間 (分鐘)',
+            data: [27.5, 9.2, 2.8, 0.1],
+            backgroundColor: ['#f97316', '#fb923c', '#fbbf24', '#ef4444'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#d6d3d1', font: { size: 11 } } }
+          },
+          scales: {
+            x: { ticks: { color: '#a8a29e' }, grid: { color: '#292524' } },
+            y: {
+              ticks: { color: '#a8a29e' },
+              grid: { color: '#292524' },
+              title: { display: true, text: '分鐘 (Min)', color: '#a8a29e' }
+            }
+          }
+        }
+      });
+    }
+
+    // Slide 7: Searing Wet vs Dry Toggle
+    const searWetBtn = document.getElementById('searWetBtn');
+    const searDryBtn = document.getElementById('searDryBtn');
+    const searPanel = document.getElementById('searPanel');
+    const searTitle = document.getElementById('searTitle');
+    const searTempBadge = document.getElementById('searTempBadge');
+    const searBody = document.getElementById('searBody');
+    const searSteps = document.getElementById('searSteps');
+
+    searWetBtn.addEventListener('click', () => {
+      searWetBtn.className = 'bg-rose-600 text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-lg cursor-pointer';
+      searDryBtn.className = 'bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs sm:text-sm font-bold px-4 py-2 rounded-lg cursor-pointer';
+      searPanel.className = 'bg-rose-950/25 border border-rose-700/50 rounded-xl p-6 mb-5';
+      searTitle.className = 'text-xl font-bold text-rose-300';
+      searTitle.textContent = '水煮效應 (Steaming Effect)：表面溫度鎖死在 100°C';
+      searTempBadge.className = 'font-mono text-sm font-bold bg-rose-900/70 text-rose-200 px-3 py-1 rounded-full';
+      searTempBadge.textContent = '表面最高溫：100°C';
+      searBody.textContent = '水在 100°C (212°F) 就會沸騰吸熱。在表面水分（特別是剛從舒肥袋取出的肉汁）完全蒸發前，鍋子的熱量全被拿去燒開水，表面溫度無法跨越 140°C 的梅納反應門檻。結果煎了兩分鐘還是灰白沒上色，內部卻已被蒸到過熟乾柴。';
+      searSteps.innerHTML = '<strong>問題診斷</strong>：表面殘水 + 薄底鍋蓄熱不足 → 鍋面降溫跌破 140°C → 梅納反應無法啟動。';
+    });
+
+    searDryBtn.addEventListener('click', () => {
+      searDryBtn.className = 'bg-emerald-600 text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-lg cursor-pointer';
+      searWetBtn.className = 'bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs sm:text-sm font-bold px-4 py-2 rounded-lg cursor-pointer';
+      searPanel.className = 'bg-emerald-950/25 border border-emerald-700/50 rounded-xl p-6 mb-5';
+      searTitle.className = 'text-xl font-bold text-emerald-300';
+      searTitle.textContent = '黃金梅納外殼：熱能直接推動 140°C–165°C 褐變';
+      searTempBadge.className = 'font-mono text-sm font-bold bg-emerald-900/70 text-emerald-200 px-3 py-1 rounded-full';
+      searTempBadge.textContent = '表面反應區：140–165°C';
+      searBody.textContent = '下鍋前用廚房紙巾徹底擦乾牛排表面（沒有液態水搶熱量），並使用厚底鑄鐵鍋或重型不鏽鋼鍋充分預熱，搭配高發煙點油脂。牛排一接觸鍋面即可在 30–60 秒內迅速啟動梅納反應，煎出酥脆焦香外殼同時不傷及內部熟度。';
+      searSteps.innerHTML = '<strong>標準三步驟</strong>：(1) 廚房紙巾徹底壓乾 → (2) 厚底鍋充分預熱 → (3) 高發煙點油快煎上色。';
+    });
+
+    goToSlide(0);
+  </script>
+</body>
+</html>
